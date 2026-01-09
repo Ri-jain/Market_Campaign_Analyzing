@@ -71,9 +71,11 @@ class MarketingAnalyzer:
             return pd.concat(waste_list).sort_values(by='Spend', ascending=False)
         return pd.DataFrame()
 
-# REPLACE THE 'generate_excel_template' FUNCTION WITH THIS:
+# ==========================================
+# 🛠️ HELPER: GENERATE CSV TEMPLATE
+# ==========================================
 def generate_csv_template():
-    # 1. Define Data
+    # 1. Define Data matching your SOP exactly
     headers = ['Platform', 'Date', 'Campaign Name', 'Objective', 'Location', 'Spend', 'Impressions', 'Clicks', 'Engagements']
     example_data = [
         ['TikTok', '2025-01-01', 'Summer_Promo_001', 'Awareness', 'Chicago', 500.00, 45000, 800, 3500],
@@ -82,18 +84,8 @@ def generate_csv_template():
     ]
     df = pd.DataFrame(example_data, columns=headers)
     
-    # 2. Convert to CSV
+    # 2. Convert to CSV string (No installation needed!)
     return df.to_csv(index=False).encode('utf-8')
-
-# THEN UPDATE THE DOWNLOAD BUTTON IN THE SIDEBAR:
-csv_file = generate_csv_template()
-st.sidebar.download_button(
-    label="📥 Download Template (CSV)",
-    data=csv_file,
-    file_name="Marketing_Data_Template.csv",
-    mime="text/csv",
-    help="Click to download a CSV file with examples."
-)
 
 # ==========================================
 # 🖥️ THE DASHBOARD (Streamlit UI)
