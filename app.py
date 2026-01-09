@@ -71,11 +71,9 @@ class MarketingAnalyzer:
             return pd.concat(waste_list).sort_values(by='Spend', ascending=False)
         return pd.DataFrame()
 
-# ==========================================
-# 🛠️ HELPER: GENERATE EXCEL TEMPLATE
-# ==========================================
-def generate_excel_template():
-    # 1. Define Data matching your SOP exactly
+# REPLACE THE 'generate_excel_template' FUNCTION WITH THIS:
+def generate_csv_template():
+    # 1. Define Data
     headers = ['Platform', 'Date', 'Campaign Name', 'Objective', 'Location', 'Spend', 'Impressions', 'Clicks', 'Engagements']
     example_data = [
         ['TikTok', '2025-01-01', 'Summer_Promo_001', 'Awareness', 'Chicago', 500.00, 45000, 800, 3500],
@@ -84,22 +82,18 @@ def generate_excel_template():
     ]
     df = pd.DataFrame(example_data, columns=headers)
     
-    # 2. Write to In-Memory Buffer
-    buffer = io.BytesIO()
-    # Use xlsxwriter engine for formatting
-    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-        df.to_excel(writer, sheet_name='Data_Input', index=False)
-        
-        # Formatting (Green Headers)
-        workbook = writer.book
-        worksheet = writer.sheets['Data_Input']
-        header_fmt = workbook.add_format({'bold': True, 'fg_color': '#D7E4BC', 'border': 1})
-        
-        for col_num, value in enumerate(df.columns.values):
-            worksheet.write(0, col_num, value, header_fmt)
-            worksheet.set_column(col_num, col_num, 15)  # Set column width
-            
-    return buffer.getvalue()
+    # 2. Convert to CSV
+    return df.to_csv(index=False).encode('utf-8')
+
+# THEN UPDATE THE DOWNLOAD BUTTON IN THE SIDEBAR:
+csv_file = generate_csv_template()
+st.sidebar.download_button(
+    label="📥 Download Template (CSV)",
+    data=csv_file,
+    file_name="Marketing_Data_Template.csv",
+    mime="text/csv",
+    help="Click to download a CSV file with examples."
+)
 
 # ==========================================
 # 🖥️ THE DASHBOARD (Streamlit UI)
