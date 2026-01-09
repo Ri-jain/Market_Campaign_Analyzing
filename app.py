@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
-import io
 
 # ==========================================
 # 🧠 THE ENGINE (MarketingAnalyzer Class)
@@ -92,21 +91,19 @@ def generate_csv_template():
 # ==========================================
 st.set_page_config(page_title="Cross-Platform Audit", page_icon="🕵️", layout="wide")
 
+# --- SIDEBAR: START HERE ---
 st.sidebar.header("1. Start Here")
 
-# --- STEP 1: DOWNLOAD TEMPLATE ---
-st.sidebar.markdown("### Step 1: Get Template")
-try:
-    excel_file = generate_excel_template()
-    st.sidebar.download_button(
-        label="📥 Download Excel Template",
-        data=excel_file,
-        file_name="Marketing_Data_Template.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        help="Click to download a formatted Excel file with examples."
-    )
-except Exception as e:
-    st.sidebar.warning("To enable template download, install XlsxWriter: `pip install XlsxWriter`")
+# --- BUTTON IS HERE ---
+csv_file = generate_csv_template()
+st.sidebar.download_button(
+    label="📥 Download CSV Template",
+    data=csv_file,
+    file_name="Marketing_Data_Template.csv",
+    mime="text/csv",
+    help="Click to download a ready-to-use CSV file."
+)
+# ----------------------
 
 st.sidebar.markdown("---")
 
@@ -278,7 +275,7 @@ if uploaded_file:
         st.error(f"Error processing file: {e}")
 else:
     # Empty State with Instructions
-    st.info("👈 Start by downloading the Excel Template in the sidebar!")
+    st.info("👈 Start by downloading the CSV Template in the sidebar!")
     st.markdown("### How to use this tool:")
     st.markdown("""
     1. **Download the Template** from the left sidebar.
